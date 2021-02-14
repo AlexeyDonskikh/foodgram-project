@@ -1,8 +1,7 @@
-import pdfkit
-
 from decimal import Decimal
 
-from django.db import transaction, IntegrityError
+import pdfkit
+from django.db import IntegrityError, transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
