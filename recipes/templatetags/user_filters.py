@@ -1,10 +1,8 @@
 from django import template
-from django.contrib.auth import get_user_model
 
 from api.models import Favorite, Purchase, Subscription
 
 register = template.Library()
-User = get_user_model()
 
 
 @register.filter

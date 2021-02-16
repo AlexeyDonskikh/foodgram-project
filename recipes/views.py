@@ -8,12 +8,12 @@ from django.db.models import Count, Sum
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import RecipeForm
-from .models import Recipe, Tag
-from .utils import edit_recipe, generate_pdf, save_recipe
+from foodgram.settings import TAGS
+from recipes.forms import RecipeForm
+from recipes.models import Recipe
+from recipes.utils import edit_recipe, generate_pdf, get_recipes, save_recipe
 
 User = get_user_model()
-TAGS = ['breakfast', 'lunch', 'dinner']
 
 
 def index(request):
@@ -21,7 +21,6 @@ def index(request):
     Display most recent `recipes.Recipe`, fitered with tags, 6 per page.
     """
     tags = request.GET.getlist('tag', TAGS)
-    all_tags = Tag.objects.all()
 
     recipes = Recipe.objects.filter(
         tags__title__in=tags
@@ -42,7 +41,6 @@ def index(request):
             'page': page,
             'paginator': paginator,
             'tags': tags,
-            'all_tags': all_tags,
         }
     )
 
@@ -51,7 +49,7 @@ def recipe_view_redirect(request, recipe_id):
     """
     Redirect to the `recipe_view_slug` page.
     """
-    recipe = get_object_or_404(Recipe.objects.all(), id=recipe_id)
+    recipe = get_object_or_404(Recipe, id=recipe_id)
 
     return redirect('recipe_view_slug', recipe_id=recipe.id, slug=recipe.slug)
 
@@ -141,12 +139,11 @@ def profile_view(request, username):
     6 per page.
     """
     tags = request.GET.getlist('tag', TAGS)
-    all_tags = Tag.objects.all()
 
     author = get_object_or_404(User, username=username)
-    author_recipes = author.recipes.filter(
-        tags__title__in=tags
-    ).prefetch_related('tags').distinct()
+
+    author_recipes = get_recipes(request, tags)
+    author_recipes = author_recipes.filter(author=author)
 
     paginator = Paginator(author_recipes, settings.PAGINATION_PAGE_SIZE)
     page_number = request.GET.get('page')
@@ -160,7 +157,6 @@ def profile_view(request, username):
             'page': page,
             'paginator': paginator,
             'tags': tags,
-            'all_tags': all_tags,
         }
     )
 
@@ -198,16 +194,9 @@ def favorites(request):
     filtered with tags, 6 per page.
     """
     tags = request.GET.getlist('tag', TAGS)
-    all_tags = Tag.objects.all()
 
-    recipes = Recipe.objects.filter(
-        favored_by__user=request.user,
-        tags__title__in=tags
-    ).select_related(
-        'author'
-    ).prefetch_related(
-        'tags'
-    ).distinct()
+    recipes = get_recipes(request, tags)
+    recipes = recipes.filter(favored_by__user=request.user)
 
     paginator = Paginator(recipes, settings.PAGINATION_PAGE_SIZE)
     page_number = request.GET.get('page')
@@ -220,7 +209,6 @@ def favorites(request):
             'page': page,
             'paginator': paginator,
             'tags': tags,
-            'all_tags': all_tags,
         }
     )
 

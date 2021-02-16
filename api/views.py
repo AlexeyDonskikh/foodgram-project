@@ -3,11 +3,10 @@ from rest_framework import filters, mixins, status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from api.models import Favorite, Subscription
+from api.serializers import (FavoriteSerializer, IngredientSerializer,
+                             PurchaseSerializer, SubscriptionSerializer)
 from recipes.models import Ingredient
-
-from .models import Favorite, Subscription
-from .serializers import (FavoriteSerializer, IngredientSerializer,
-                          PurchaseSerializer, SubscriptionSerializer)
 
 
 class CreateDestroyViewSet(mixins.CreateModelMixin,
@@ -17,6 +16,7 @@ class CreateDestroyViewSet(mixins.CreateModelMixin,
     A viewset that provides `create` and `destroy` actions.
     `destroy` action is overriden to return a json with a `success` flag.
     """
+
     def get_object(self, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
@@ -43,7 +43,7 @@ class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    filter_backends = (filters.SearchFilter, )
+    filter_backends = (filters.SearchFilter,)
     search_fields = ('^title',)
 
 
@@ -54,7 +54,7 @@ class SubscriptionViewSet(CreateDestroyViewSet):
     """
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     lookup_field = 'author'
 
 
@@ -65,7 +65,7 @@ class FavoriteViewSet(CreateDestroyViewSet):
     """
     queryset = Favorite.objects.all()
     serializer_class = FavoriteSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     lookup_field = 'recipe'
 
 
@@ -75,7 +75,7 @@ class PurchaseViewSet(mixins.ListModelMixin, CreateDestroyViewSet):
     `api.Purchase` entries for a given `auth.User`.
     """
     serializer_class = PurchaseSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     lookup_field = 'recipe'
 
     def get_queryset(self):

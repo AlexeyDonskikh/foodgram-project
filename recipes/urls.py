@@ -1,6 +1,6 @@
 from django.urls import include, path
 
-from . import views
+from recipes import views
 
 recipes_urls = [
     path('new/', views.recipe_new, name='recipe_new'),

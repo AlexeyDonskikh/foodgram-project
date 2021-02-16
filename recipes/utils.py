@@ -6,7 +6,13 @@ from django.http import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from django.template.loader import get_template
 
-from .models import Ingredient, RecipeIngredient
+from foodgram.settings import PDF_OPTIONS
+from recipes.models import Ingredient, Recipe, RecipeIngredient
+
+
+def get_recipes(request, tags):
+    recipe_list = Recipe.objects.filter(tags__slug__in=tags).distinct()
+    return recipe_list
 
 
 def get_ingredients(request):
@@ -69,14 +75,5 @@ def generate_pdf(template_name, context):
     """
     Generate a PDF file from Django template.
     """
-    pdf_options = {
-        'page-size': 'Letter',
-        'margin-top': '0.75in',
-        'margin-right': '0.75in',
-        'margin-bottom': '0.75in',
-        'margin-left': '0.75in',
-        'encoding': "UTF-8",
-        'no-outline': None
-    }
     html = get_template(template_name).render(context)
-    return pdfkit.from_string(html, False, options=pdf_options)
+    return pdfkit.from_string(html, False, options=PDF_OPTIONS)

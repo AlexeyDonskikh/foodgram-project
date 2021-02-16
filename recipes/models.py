@@ -87,6 +87,12 @@ class RecipeIngredient(models.Model):
 
     class Meta:
         unique_together = ('ingredient', 'recipe')
+        constraints = [
+            models.UniqueConstraint(
+                fields=['ingredient", "recipe'],
+                name='unique_recipe_ingredient',
+            )
+        ]
 
 
 class Tag(models.Model):

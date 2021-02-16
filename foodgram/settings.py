@@ -11,10 +11,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os
-import environ
-
 from pathlib import Path
 
+import environ
 
 env = environ.Env()
 environ.Env.read_env() # импортируем
@@ -46,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sorl.thumbnail',
     'rest_framework',
     'recipes',
     'users',
@@ -77,7 +77,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'recipes.context_processors.shop_list_size'
+                'recipes.context_processors.shop_list_size',
+                'recipes.context_processors.all_tags',
             ],
         },
     },
@@ -92,7 +93,6 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 DATABASES = {
     'default': env.db(),
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -151,3 +151,20 @@ REST_FRAMEWORK = {
 SITE_ID = 2
 
 PAGINATION_PAGE_SIZE = 6
+
+PDF_OPTIONS = {
+    'page-size': 'Letter',
+    'margin-top': '0.75in',
+    'margin-right': '0.75in',
+    'margin-bottom': '0.75in',
+    'margin-left': '0.75in',
+    'encoding': 'UTF-8',
+    'no-outline': None
+}
+
+BREAKFAST_TAG = 'breakfast'
+LUNCH_TAG = 'lunch'
+DINNER_TAG = 'dinner'
+TAGS = [
+    BREAKFAST_TAG, LUNCH_TAG, DINNER_TAG
+]
