@@ -10,6 +10,7 @@ def shop_list_size(request):
         'shop_list_size': count
     }
 
+
 def all_tags(request):
     all_tags = Tag.objects.all()
     return {'all_tags': all_tags}
