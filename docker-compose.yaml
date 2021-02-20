@@ -12,7 +12,7 @@ services:
     env_file:
       - ./.env
   web:
-    build: .
+    image: donskihalexey/foodgram-project:latest
     restart: always
     volumes:
       - static_volume:/code/static/
