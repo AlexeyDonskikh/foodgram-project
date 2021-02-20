@@ -9,7 +9,7 @@ Foodgram - онлайн-сервис, где пользователи смогу
 # Развёртывание проекта
 Клонировать репозиторий
     
-    git clone https://github.com/AlexeyDonskikh/infra_sp2.git
+    git clone https://github.com/AlexeyDonskikh/foodgram-project.git
 
 Создайте в корневой директории проекта файл .env, заполненный по аналогии с шаблоном:
 
