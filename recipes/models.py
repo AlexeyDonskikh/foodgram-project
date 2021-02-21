@@ -85,13 +85,12 @@ class RecipeIngredient(models.Model):
     )
 
     class Meta:
-        unique_together = ('ingredient', 'recipe')
+        verbose_name = 'ингредиент рецепта'
+        verbose_name_plural = 'ингредиенты рецепта'
         constraints = [
             models.UniqueConstraint(
-                fields=['ingredient", "recipe'],
-                name='unique_recipe_ingredient',
-            )
-        ]
+                fields=['recipe', 'ingredient'],
+                name='recipe_ingredients')]
 
 
 class Tag(models.Model):
