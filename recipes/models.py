@@ -53,7 +53,10 @@ class Recipe(models.Model):
         verbose_name='Теги'
     )
     pub_date = models.DateTimeField(
-        auto_now_add=True, verbose_name="Дата публикации")
+        'Дата публикации',
+        auto_now_add=True,
+        db_index=True
+    )
 
     class Meta:
         ordering = ('-pub_date', )
@@ -70,12 +73,11 @@ class RecipeIngredient(models.Model):
     `recipes.Recipe` and `recipes.Ingredient`.
     Also stores an additional `quantity` field.
     """
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-        related_name='ingredients_amounts'
-    )
+        Recipe, verbose_name='рецепт', on_delete=models.CASCADE,
+        related_name='recipe_ingredients')
+    ingredient = models.ForeignKey(
+        Ingredient, verbose_name='ингредиент', on_delete=models.CASCADE)
     quantity = models.DecimalField(
         max_digits=6,
         decimal_places=1,
