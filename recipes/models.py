@@ -53,10 +53,7 @@ class Recipe(models.Model):
         verbose_name='Теги'
     )
     pub_date = models.DateTimeField(
-        'Дата публикации',
-        auto_now_add=True,
-        db_index=True
-    )
+        auto_now_add=True, verbose_name="Дата публикации")
 
     class Meta:
         ordering = ('-pub_date', )
