@@ -66,21 +66,16 @@ class Purchase(models.Model):
     Stores a purchase relation between `auth.User` and `recipes.Recipe`.
     """
     user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='purchases',
-        verbose_name='Пользователь',
-    )
+        User, on_delete=models.CASCADE, verbose_name='автор',
+        related_name='purchases')
     recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-        verbose_name='Рецепт в покупках',
-    )
+        Recipe, on_delete=models.CASCADE, verbose_name='рецепт',
+        related_name='purchases')
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'recipe'],
-                name='unique_purchase')]
-        verbose_name = 'Покупка'
-        verbose_name_plural = 'Покупки'
+                name='unique_purchases')]
+        verbose_name = 'список покупок'
+        verbose_name_plural = 'списки покупок'
