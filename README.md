@@ -31,7 +31,7 @@ Foodgram - онлайн-сервис, где пользователи смогу
 
     docker exec -it <CONTAINER ID> bash
 
-Для выполнения миграций, загрузки статики запустите entrypoint.sh
+Для выполнения миграций, загрузки статики и заполнения базы данных запустите entrypoint.sh
 
     bash entrypoint.sh
 
