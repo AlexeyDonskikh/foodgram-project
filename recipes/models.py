@@ -1,3 +1,4 @@
+from autoslug import AutoSlugField
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -45,7 +46,7 @@ class Recipe(models.Model):
         verbose_name='Ингредиент'
     )
     cooking_time = models.PositiveSmallIntegerField('Время приготовления')
-    slug = models.SlugField(unique=True)
+    slug = AutoSlugField(populate_from='title', allow_unicode=True)
     tags = models.ManyToManyField(
         'Tag',
         related_name='recipes',
