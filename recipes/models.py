@@ -46,7 +46,7 @@ class Recipe(models.Model):
         verbose_name='Ингредиент'
     )
     cooking_time = models.PositiveSmallIntegerField('Время приготовления')
-    slug = AutoSlugField(populate_from='title', allow_unicode=True)
+    slug = models.SlugField(unique=True)
     tags = models.ManyToManyField(
         'Tag',
         related_name='recipes',
