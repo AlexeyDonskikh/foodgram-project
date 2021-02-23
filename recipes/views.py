@@ -138,12 +138,9 @@ def profile_view(request, username):
     Display all `recipes.Recipe` of a given `auth.User`, filtered with tags,
     6 per page.
     """
-    tags = request.GET.getlist('tag', TAGS)
-
     author = get_object_or_404(User, username=username)
-
+    tags = request.GET.getlist('tag')
     author_recipes = get_recipes(request, tags)
-    author_recipes = author_recipes.filter(author=author)
 
     paginator = Paginator(author_recipes, settings.PAGINATION_PAGE_SIZE)
     page_number = request.GET.get('page')
@@ -193,10 +190,9 @@ def favorites(request):
     Display all `recipes.Recipe` that visitor had marked as favorite,
     filtered with tags, 6 per page.
     """
-    tags = request.GET.getlist('tag', TAGS)
+    tags = request.GET.getlist('tag')
 
     recipes = get_recipes(request, tags)
-    recipes = recipes.filter(favored_by__user=request.user)
 
     paginator = Paginator(recipes, settings.PAGINATION_PAGE_SIZE)
     page_number = request.GET.get('page')

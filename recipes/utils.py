@@ -11,7 +11,13 @@ from recipes.models import Ingredient, Recipe, RecipeIngredient
 
 
 def get_recipes(request, tags):
-    recipe_list = Recipe.objects.filter(tags__slug__in=tags).distinct()
+    if tags:
+        recipe_list = Recipe.objects.filter(
+            favored_by__user=request.user).prefetch_related(
+            'author', 'tags').filter(
+            tags__slug__in=tags).distinct()
+    else:
+        recipe_list = Recipe.objects.filter(favored_by__user=request.user)
     return recipe_list
 
 
