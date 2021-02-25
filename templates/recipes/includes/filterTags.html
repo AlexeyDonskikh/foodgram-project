@@ -3,8 +3,7 @@
 <ul class="tags">
   {% for tag in all_tags %}
     <li class="tags__item">
-      <a
-        id="{{ tag.title }}"
+      <a id="{{ tag.title }}"
         class="tags__checkbox tags__checkbox_style_{{ tag.color }}
         {% if tag.title in request.GET|parse_tags %}tags__checkbox_active{% endif %}"
         href="{{ request.path }}?{{ request|set_tag_qs:tag}}">
