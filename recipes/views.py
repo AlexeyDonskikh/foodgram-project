@@ -5,12 +5,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Count, Sum
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from foodgram.settings import TAGS
 from recipes.forms import RecipeForm
-from recipes.models import Recipe
+from recipes.models import Recipe, RecipeIngredient
 from recipes.utils import edit_recipe, generate_pdf, get_recipes, save_recipe
 
 User = get_user_model()
@@ -233,7 +233,7 @@ def purchases_download(request):
         'recipe__ingredients__title'
     ).values(
         'recipe__ingredients__title', 'recipe__ingredients__dimension'
-    ).annotate(amount=Sum('recipe__ingredients_amounts__quantity')).all()
+    ).annotate(amount=Sum('recipe__recipe_ingredients__quantity')).all()
 
     pdf = generate_pdf(
         'misc/shopListPDF.html', {'ingredients': ingredients}

@@ -27,3 +27,4 @@ sorl-thumbnail==12.7.0
 toml==0.10.2
 urllib3==1.25.10
 wcwidth==0.1.9
+wkhtmltopdf==0.2
