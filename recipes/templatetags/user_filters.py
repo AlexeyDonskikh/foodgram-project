@@ -12,7 +12,7 @@ def addclass(field, css):
 
 @register.filter
 def is_subscribed_to(user, author):
-    return Subscription.objects.filter(user=user, author=author).exists()
+    return Subscription.objects.filter(user=user, author=author)
 
 
 @register.filter

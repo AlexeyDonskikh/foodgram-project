@@ -18,10 +18,12 @@
   <div class="single-card__info">
 
     <div class="single-card__header-info">
-      <h1 class="single-card__title">{{ recipe.title }}</h1>   
-      <div class="single-card__favorite">
-        {% include './includes/favoriteButton.html' with recipe=recipe big=True %}
-      </div>
+      <h1 class="single-card__title">{{ recipe.title }}</h1>
+      {% if user.is_authenticated %}
+        <div class="single-card__favorite">
+          {% include './includes/favoriteButton.html' with recipe=recipe big=True %}
+        </div>
+      {% endif %}
     </div>
 
     <ul class="single-card__items">
@@ -44,7 +46,7 @@
       {% if user.is_authenticated %}
         <li class="single-card__item">
           {% if recipe|is_in_shop_list_of:user %}
-            <button class="button button_style_blue" name="purchases">
+            <button class="button button_style_light-blue-outline" name="purchases">
               <span class="icon-check button__icon"></span> Рецепт добавлен
             </button>
           {% else %}
@@ -52,7 +54,11 @@
           {% endif %}
         </li>
         {% if recipe.author != user %}
-          <li class="single-card__item"><button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться на автора</button></li>
+          {% if user|is_subscribed_to:recipe.author %}
+            <li class="single-card__item"><button class="button button_style_light-blue button_size_subscribe" name="subscribe">Отписаться от автора</button></li>
+          {% else %}
+            <li class="single-card__item"><button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться на автора</button></li>
+          {% endif %}
         {% endif %}
       {% endif %}
     </ul>
