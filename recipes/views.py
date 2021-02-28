@@ -40,7 +40,6 @@ def index(request):
         {
             'page': page,
             'paginator': paginator,
-            'tags': tags,
         }
     )
 
