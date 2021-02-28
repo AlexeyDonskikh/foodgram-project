@@ -134,12 +134,13 @@ def recipe_delete(request, recipe_id, slug):
 
 def profile_view(request, username):
     """
-    Display all `recipes.Recipe` of a given `auth.User`, filtered with tags,
-    6 per page.
+    Display all `recipes.Recipe` of a given `auth.User`, filtered with tags
     """
     author = get_object_or_404(User, username=username)
-    tags = request.GET.getlist('tag')
-    author_recipes = get_recipes(request, tags)
+    tags = request.GET.getlist('tag', TAGS)
+    author_recipes = author.recipes.filter(
+        tags__title__in=tags
+    ).prefetch_related('tags').distinct()
 
     paginator = Paginator(author_recipes, settings.PAGINATION_PAGE_SIZE)
     page_number = request.GET.get('page')
@@ -152,7 +153,6 @@ def profile_view(request, username):
             'author': author,
             'page': page,
             'paginator': paginator,
-            'tags': tags,
         }
     )
 
@@ -187,7 +187,7 @@ def subscriptions(request):
 def favorites(request):
     """
     Display all `recipes.Recipe` that visitor had marked as favorite,
-    filtered with tags, 6 per page.
+    filtered with tags
     """
     tags = request.GET.getlist('tag')
 
@@ -203,7 +203,6 @@ def favorites(request):
         {
             'page': page,
             'paginator': paginator,
-            'tags': tags,
         }
     )
 
